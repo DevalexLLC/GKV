@@ -31,7 +31,7 @@ func GetKey(enc Encoder, r *http.Request) (int, string) {
 		return http.StatusNotFound, Must(enc.Encode(
 			NewError(ErrCodeNotExist, fmt.Sprintf("the key with id %s does not exist", r.FormValue("key")))))
 	}
-	
+
 	al := ConvertKeyVal(string(key), string(value))
 	return http.StatusOK, Must(enc.Encode(al))
 }
@@ -39,18 +39,18 @@ func GetKey(enc Encoder, r *http.Request) (int, string) {
 // AddKey creates the posted key value.
 func AddKey(w http.ResponseWriter, r *http.Request, enc Encoder) (int, string) {
 	key, value := r.FormValue("key"), r.FormValue("value")
-	
+
 	if key == "" || value == "" {
 		fmt.Println("Missing key/value")
 		return http.StatusBadRequest, ""
 	}
-	
+
 	// Add the file to the database
 	err := db.Put([]byte(key), []byte(value), nil)
 	if err != nil {
 		return http.StatusNotModified, ""
 	}
-	
+
 	al := ConvertKeyVal(string(key), string(value))
 	return http.StatusCreated, Must(enc.Encode(al))
 }
@@ -58,18 +58,18 @@ func AddKey(w http.ResponseWriter, r *http.Request, enc Encoder) (int, string) {
 // DeleteKey deletes the corresponding key/value
 func DeleteKey(enc Encoder, r *http.Request) (int, string) {
 	key := r.FormValue("key")
-	
+
 	if key == "" {
 		fmt.Println("Missing key")
 		return http.StatusBadRequest, ""
 	}
-	
+
 	err = db.Delete([]byte(key), nil)
 	if err != nil {
 		return http.StatusNotModified, ""
 	} else {
 		fmt.Printf("Key [%s] deleted\n", key)
 	}
-	
+
 	return http.StatusNoContent, ""
 }

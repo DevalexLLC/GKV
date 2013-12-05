@@ -13,7 +13,7 @@ type Item struct {
 }
 
 // The one and only database instance.
-var db, err = leveldb.OpenFile("d:\\leveldb", nil)
+var db, err = leveldb.OpenFile("c:\\leveldb", nil)
 
 func ConvertKeyVal(key, value string) *Item {
 	return &Item{

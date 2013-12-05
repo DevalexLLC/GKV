@@ -28,7 +28,7 @@ func init() {
 	// Setup routes
 	r := martini.NewRouter()
 	r.Get(`/gkv`, GetKey)
-	r.Get(`/gkv/:key`, GetKey)
+	r.Get(`/gkv/keys`, GetAllKeys)
 	r.Post(`/gkv`, AddKey)
 	// r.Put(`/files/:id`, UpdateFile)
 	r.Delete(`/gkv`, DeleteKey)

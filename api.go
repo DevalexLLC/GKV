@@ -13,7 +13,7 @@ type Item struct {
 }
 
 // The one and only database instance.
-var db, err = leveldb.OpenFile("c:\\leveldb", nil)
+var db, err = leveldb.OpenFile("leveldb", nil)
 
 func ConvertKeyVal(key, value string) *Item {
 	return &Item{
@@ -34,6 +34,21 @@ func GetKey(enc Encoder, r *http.Request) (int, string) {
 
 	al := ConvertKeyVal(string(key), string(value))
 	return http.StatusOK, Must(enc.Encode(al))
+}
+
+// GetAllKeys returns all key/values.
+func GetAllKeys(enc Encoder) (int, string) {
+	iter := db.NewIterator(nil)
+	for iter.Next() {
+		key := iter.Key()
+		value := iter.Value()
+		// fmt.Printf("Key[%s] equals Value[%s]", key, value)
+		al := ConvertKeyVal(string(key), string(value))
+		return http.StatusOK, Must(enc.Encode(al))
+	}
+	iter.Release()
+	err = iter.Error()
+	return http.StatusOK, ""
 }
 
 // AddKey creates the posted key value.

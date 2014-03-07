@@ -1,3 +1,5 @@
+*Do Not Use In Production. This was my first attempt at playing with Go and wasn't intended for real world use.*
+
 GKV
 ===
 
